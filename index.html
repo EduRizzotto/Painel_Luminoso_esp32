@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Luzes Rizzotto&Rizzotto</title>
+    <style>
+
+        h1 {
+            color: white;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            background-color: #2d2d2e;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .quadrado {
+            border: 1px solid #fff;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            box-sizing: border-box;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            overflow: hidden;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, filter 0.1s ease, transform 0.1s ease;
+        }
+
+        .quadrado img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            transform: scale(1.2);
+            pointer-events: none;
+            border-radius: 50%;
+        }
+
+        .quadrado:active {
+            background-color: #383838;
+            filter: brightness(1.6);
+            transform: scale(0.98);
+        }
+
+        .quadrado.aceso {
+            background-color: #555554;
+            box-shadow: 0 0 30px #a9a7a7;
+        }
+
+        .quadrado.aceso:active {
+            background-color: #4e4e4e;
+            filter: brightness(1.3);
+            transform: scale(0.98);
+        }
+
+        .retangulo {
+            width: 100%;
+            height: 110px;
+            padding: 12px;
+            background-color: #ff0000;
+            border-radius: 12px;
+            border: 1px solid #fff;
+            color: #ffffff;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease, filter 0.1s ease, transform 0.1s ease;
+            box-sizing: border-box;
+        }
+
+        .retangulo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .retangulo:active {
+            filter: brightness(1.2);
+            transform: scale(0.98);
+        }
+
+        .retangulo.aceso {
+            background-color: #ff4040;
+            box-shadow: 0 0 25px #ff0000;
+        }
+
+        .btn-acao {
+            width: 100%;
+            padding: 14px 20px;
+            margin-top: 8px;
+            background-color: #2196f3;
+            color: #ffffff;
+            border: 1px solid #fff;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            transition: filter 0.15s ease, transform 0.1s ease;
+            box-sizing: border-box;
+        }
+
+        .btn-acao:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-acao:active {
+            filter: brightness(1.2);
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <h1>Rizzotto & Rizzotto</h1>
+
+    <div class="container">
+        <div class="quadrado" id="luz">
+            <img src="logo.jpg" alt="Logo Rizzotto & Rizzotto">
+        </div>
+        <button class="retangulo" id="luz2">
+            <img src="image-removebg-preview.png" alt="Logo 2">
+        </button>
+        <button class="btn-acao" id="btn-acao">Modo 1</button>
+    </div>
+    
+    <script>
+        const luz1 = document.getElementById('luz');
+        const luz2 = document.getElementById('luz2');
+        const btnAcao = document.getElementById('btn-acao');
+
+        let modo = 1;
+
+        function verificarModo() {
+            const algumaAcesa = luz1.classList.contains('aceso') || luz2.classList.contains('aceso');
+            if (algumaAcesa || modo == 0) {
+                btnAcao.innerText = "Modo manual";
+                modo = 0;
+            } else {
+                btnAcao.innerText = "Modo " + modo; 
+                fetch('/mudarModo?modo=' + modo);
+            }
+        }
+
+        [luz1, luz2].forEach(el => {
+            el.addEventListener('click', () => {
+                el.classList.toggle('aceso');
+                verificarModo();
+            });
+        });
+
+        btnAcao.addEventListener('click', () => {
+            modo = (modo % 5) + 1;
+            btnAcao.innerText = "Modo " + modo;
+
+            luz1.classList.remove('aceso');
+            luz2.classList.remove('aceso');
+        });
+    </script>
+</body>
+</html>

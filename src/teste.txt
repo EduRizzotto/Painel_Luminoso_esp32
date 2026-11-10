@@ -1,0 +1,30 @@
+#include <Arduino.h>
+
+const int PINO_1 = 13;
+const int PINO_2 = 14;
+
+void setup() {
+    Serial.begin(115200);
+
+    pinMode(PINO_1, OUTPUT);
+    pinMode(PINO_2, OUTPUT);
+
+    digitalWrite(PINO_1, HIGH);
+    digitalWrite(PINO_2, HIGH);
+
+    Serial.println("Iniciando teste dos pinos 13 e 12...");
+}
+
+void loop() {
+    // 1. Liga o Relé 1 (Pino 13) e desliga o Relé 2 (Pino 12)
+    Serial.println(">>> Relé 1 (Pino 13): LIGADO | Relé 2 (Pino 12): DESLIGADO");
+    digitalWrite(PINO_1, LOW);   // LOW liga
+    digitalWrite(PINO_2, HIGH);  // HIGH desliga
+    delay(1000);
+
+    // 2. Desliga o Relé 1 (Pino 13) e liga o Relé 2 (Pino 12)
+    Serial.println(">>> Relé 1 (Pino 13): DESLIGADO | Relé 2 (Pino 12): LIGADO");
+    digitalWrite(PINO_1, HIGH);  // HIGH desliga
+    digitalWrite(PINO_2, LOW);   // LOW liga
+    delay(1000);
+}
